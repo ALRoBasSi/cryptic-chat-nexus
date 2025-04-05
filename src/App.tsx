@@ -10,6 +10,11 @@ import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 import Chat from "./pages/Chat";
 import AdminDashboard from "./pages/admin/Dashboard";
+import UserAdd from "./pages/admin/UserAdd";
+import UserEdit from "./pages/admin/UserEdit";
+import RoomAdd from "./pages/admin/RoomAdd";
+import RoomEdit from "./pages/admin/RoomEdit";
+import SystemSettings from "./pages/admin/SystemSettings";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +37,46 @@ const App = () => (
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/users/add" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <UserAdd />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/users/edit/:userId" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <UserEdit />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/rooms/add" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <RoomAdd />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/rooms/edit/:roomId" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <RoomEdit />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/settings" 
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <SystemSettings />
               </ProtectedRoute>
             } 
           />

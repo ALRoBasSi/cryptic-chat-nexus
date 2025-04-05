@@ -1,11 +1,13 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getAllUsers, User, logoutUser } from "@/lib/auth";
+import { getAllUsers, User, logoutUser, toggleUserBan } from "@/lib/auth";
 import { getRooms, Room } from "@/lib/chat";
 import { MessageSquare, Users, Lock, Settings } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([]);
@@ -19,6 +21,20 @@ export default function AdminDashboard() {
     
     setRooms(getRooms());
   }, []);
+  
+  const handleToggleBan = (userId: string, isBanned: boolean) => {
+    const banUntil = isBanned ? undefined : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 يوم
+    const success = toggleUserBan(userId, !isBanned, banUntil);
+    
+    if (success) {
+      // تحديث قائمة المستخدمين بعد تغيير الحالة
+      setUsers(users.map(user => 
+        user.id === userId 
+          ? { ...user, banned: !isBanned, bannedUntil: isBanned ? undefined : banUntil?.toISOString() } 
+          : user
+      ));
+    }
+  };
   
   return (
     <div className="min-h-screen bg-hacker-bg">
@@ -153,6 +169,7 @@ export default function AdminDashboard() {
                               </Button>
                               {user.role !== 'admin' && (
                                 <Button 
+                                  onClick={() => handleToggleBan(user.id, user.banned)}
                                   variant="destructive" 
                                   size="sm"
                                 >
@@ -245,8 +262,8 @@ export default function AdminDashboard() {
                       <p className="text-hacker-text mb-4">
                         جميع البيانات والرسائل المرسلة مشفرة باستخدام خوارزمية تشفير متقدمة
                       </p>
-                      <Button className="cyber-button" disabled>
-                        تعديل مفتاح التشفير
+                      <Button asChild className="cyber-button">
+                        <Link to="/admin/settings">تعديل إعدادات الأمان</Link>
                       </Button>
                     </Card>
                   </div>
@@ -257,8 +274,8 @@ export default function AdminDashboard() {
                       <p className="text-hacker-text mb-4">
                         تعديل الصلاحيات الافتراضية للمستخدمين الجدد
                       </p>
-                      <Button className="cyber-button" disabled>
-                        تعديل الصلاحيات الافتراضية
+                      <Button asChild className="cyber-button">
+                        <Link to="/admin/settings">تعديل الصلاحيات الافتراضية</Link>
                       </Button>
                     </Card>
                   </div>
