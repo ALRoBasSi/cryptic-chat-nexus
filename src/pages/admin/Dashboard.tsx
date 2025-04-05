@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -13,13 +12,11 @@ export default function AdminDashboard() {
   const [rooms, setRooms] = useState<Room[]>([]);
   
   useEffect(() => {
-    // جلب المستخدمين
     const allUsers = getAllUsers();
     if (allUsers) {
       setUsers(allUsers);
     }
     
-    // جلب الغرف
     setRooms(getRooms());
   }, []);
   
@@ -158,7 +155,6 @@ export default function AdminDashboard() {
                                 <Button 
                                   variant="destructive" 
                                   size="sm"
-                                  disabled={user.role === 'admin'}
                                 >
                                   {user.banned ? 'إلغاء الحظر' : 'حظر'}
                                 </Button>

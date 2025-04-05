@@ -270,14 +270,16 @@ export const getAllUsers = (): User[] | null => {
 // محاكاة تشفير البيانات (في النسخة الحقيقية نستخدم خوارزميات تشفير قوية)
 export const encryptData = (data: string): string => {
   // محاكاة تشفير بسيط (لا تستخدم هذا في الإنتاج)
-  return btoa(`encrypted:${data}`);
+  // تعديل الوظيفة لتتعامل مع النصوص العربية
+  return btoa(unescape(encodeURIComponent(`encrypted:${data}`)));
 };
 
 // محاكاة فك تشفير البيانات
 export const decryptData = (encryptedData: string): string => {
   try {
     // محاكاة فك تشفير بسيط (لا تستخدم هذا في الإنتاج)
-    const decoded = atob(encryptedData);
+    // تعديل الوظيفة لتتعامل مع النصوص العربية
+    const decoded = decodeURIComponent(escape(atob(encryptedData)));
     return decoded.startsWith('encrypted:') 
       ? decoded.substring(10) 
       : decoded;
