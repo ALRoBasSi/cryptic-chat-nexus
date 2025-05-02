@@ -14,6 +14,7 @@ export interface Permission {
 export interface User {
   id: string;
   username: string;
+  password?: string; // إضافة حقل كلمة المرور كحقل اختياري
   role: UserRole;
   permissions: Permission;
   createdAt: string;
