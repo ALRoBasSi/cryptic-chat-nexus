@@ -156,4 +156,34 @@ function redirect($url) {
     header("Location: " . $url);
     exit;
 }
+
+/**
+ * دالة التعامل مع طلبات API
+ * 
+ * @param string $method طريقة الطلب (GET, POST, PUT, DELETE)
+ * @return bool عودة صحيح إذا كانت الطريقة مطابقة
+ */
+function handleApiRequest($method) {
+    if ($_SERVER['REQUEST_METHOD'] !== $method) {
+        header('HTTP/1.1 405 Method Not Allowed');
+        echo json_encode(['error' => 'Method Not Allowed']);
+        exit;
+    }
+    
+    return true;
+}
+
+/**
+ * دالة لإرجاع استجابة API بتنسيق JSON
+ * 
+ * @param array $data البيانات المراد إرجاعها
+ * @param int $status_code رمز الحالة HTTP
+ * @return void
+ */
+function jsonResponse($data, $status_code = 200) {
+    http_response_code($status_code);
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    exit;
+}
 ?>

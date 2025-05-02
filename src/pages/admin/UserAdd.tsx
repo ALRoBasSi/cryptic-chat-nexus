@@ -10,11 +10,13 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
 import { addUser, UserRole } from "@/lib/auth";
 import { Link } from "react-router-dom";
-import { ChevronRight, Users } from "lucide-react";
+import { ChevronRight, Users, Eye, EyeOff } from "lucide-react";
 
 export default function UserAdd() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<UserRole>("client");
   const [permissions, setPermissions] = useState({
     canCreateRoom: false,
@@ -22,6 +24,10 @@ export default function UserAdd() {
     canDeleteMessages: false,
     canBanUsers: false
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,9 +42,28 @@ export default function UserAdd() {
       return;
     }
 
+    if (!password.trim()) {
+      toast({
+        title: "خطأ",
+        description: "يرجى إدخال كلمة المرور",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      toast({
+        title: "خطأ",
+        description: "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+        variant: "destructive"
+      });
+      return;
+    }
+
     // إضافة المستخدم
     const success = addUser({
       username,
+      password,
       role,
       permissions,
       active: true,
@@ -46,6 +71,10 @@ export default function UserAdd() {
     });
 
     if (success) {
+      toast({
+        title: "تم بنجاح",
+        description: "تمت إضافة المستخدم بنجاح",
+      });
       navigate("/admin/dashboard");
     }
   };
@@ -99,6 +128,28 @@ export default function UserAdd() {
                   placeholder="أدخل اسم المستخدم"
                   className="bg-hacker-dark-bg border-hacker/30 text-hacker-text"
                 />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-hacker-text">كلمة المرور</Label>
+                <div className="relative">
+                  <Input 
+                    id="password" 
+                    type={showPassword ? "text" : "password"}
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    placeholder="أدخل كلمة المرور"
+                    className="bg-hacker-dark-bg border-hacker/30 text-hacker-text pr-10"
+                  />
+                  <button 
+                    type="button" 
+                    className="absolute inset-y-0 left-0 pl-3 flex items-center text-hacker"
+                    onClick={togglePasswordVisibility}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-2">
