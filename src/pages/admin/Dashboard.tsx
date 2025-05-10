@@ -5,7 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllUsers, User, toggleUserBan } from "@/lib/auth";
 import { getRooms, Room } from "@/lib/chat";
-import { MessageSquare, Users, Lock, Settings, BarChart3, UserPlus, PlusCircle } from "lucide-react";
+import { 
+  MessageSquare, 
+  Users, 
+  Settings, 
+  BarChart3, 
+  UserPlus, 
+  PlusCircle,
+  LayoutDashboard
+} from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import AdminSidebar from "@/components/AdminSidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
