@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,8 @@ import {
   BarChart3, 
   UserPlus, 
   PlusCircle,
-  LayoutDashboard
+  LayoutDashboard,
+  LockKeyhole
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import AdminSidebar from "@/components/AdminSidebar";
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
               <div className="text-4xl font-bold text-hacker">
                 {users.filter(u => u.permissions.canCreateRoom || u.permissions.canUploadFiles).length}
               </div>
-              <Lock className="w-8 h-8 text-hacker opacity-70" />
+              <LockKeyhole className="w-8 h-8 text-hacker opacity-70" />
             </div>
           </CardContent>
         </Card>
