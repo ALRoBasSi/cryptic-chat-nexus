@@ -3,14 +3,15 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "@/components/LoginForm";
 import { getCurrentUser } from "@/lib/auth";
+import { LockKeyholeIcon, ShieldIcon, ShieldCheckIcon } from "lucide-react";
 
 const MatrixRainEffect = () => {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 30 }).map((_, index) => (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {Array.from({ length: 40 }).map((_, index) => (
         <div 
           key={index}
-          className="matrix-char text-hacker"
+          className="matrix-char text-hacker opacity-30"
           style={{ 
             left: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 5}s`, 
@@ -41,21 +42,39 @@ const Index = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-hacker-bg relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-hacker-dark-bg relative">
       <MatrixRainEffect />
       
-      <div className="relative z-10 text-center mb-8">
-        <h1 className="text-4xl font-bold glitch-text" data-text="نظام المحادثة المشفر">
-          نظام المحادثة المشفر
-        </h1>
-        <p className="text-hacker-text mt-4 max-w-md mx-auto">
-          نظام دردشة آمن ومشفر مع نظام صلاحيات متقدم،
-          صمم خصيصًا للتواصل السري
-        </p>
-      </div>
-      
-      <div className="relative z-10 w-full max-w-md">
-        <LoginForm />
+      <div className="relative z-10 w-full max-w-md px-4">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-20 h-20 flex items-center justify-center mb-4">
+            <ShieldIcon className="w-16 h-16 text-hacker animate-pulse-neon" />
+          </div>
+          
+          <h1 className="text-4xl font-bold glitch-text mb-2" data-text="نظام المحادثة المشفر">
+            نظام المحادثة المشفر
+          </h1>
+          
+          <div className="flex items-center gap-2 mb-4">
+            <LockKeyholeIcon className="w-4 h-4 text-hacker" />
+            <p className="text-hacker-text text-sm">تشفير من طرف إلى طرف</p>
+            <ShieldCheckIcon className="w-4 h-4 text-hacker" />
+          </div>
+          
+          <p className="text-hacker-text mt-2 max-w-md mx-auto text-center opacity-80 text-sm">
+            منصة آمنة للتواصل مع نظام صلاحيات متقدم وتشفير قوي لضمان خصوصية المحادثات
+          </p>
+        </div>
+        
+        <div className="relative z-10 w-full">
+          <LoginForm />
+        </div>
+        
+        <div className="mt-8 text-center">
+          <p className="text-hacker-text text-xs opacity-50">
+            &copy; {new Date().getFullYear()} نظام المحادثة المشفر | جميع الحقوق محفوظة
+          </p>
+        </div>
       </div>
     </div>
   );
